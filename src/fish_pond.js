@@ -1,8 +1,8 @@
-const Fish = require('./fish');
-const Target = require('./target');
-const Ripple = require('./ripple');
+import {Fish} from './fish.js';
+import {Target, Food} from './target.js';
+import {Ripple} from './ripple.js';
 
-class FishPond {
+export class FishPond {
     constructor(window) {
         this.var = 0.001;
         this.instructions = true;
@@ -10,7 +10,7 @@ class FishPond {
         this.ops = this.opacity / 60;
         this.maxFood = 100;
         this.window = window;
-        this.height = 116;
+        this.height = parseInt(document.querySelector('header').clientHeight);
         this.width = this.window.innerWidth;
         console.log(this.height, this.width);
         this.vh = this.height / 100;
@@ -59,25 +59,29 @@ class FishPond {
         const startAnimation = () => {
             const h = this.height;
             const w = this.width;
-            canvas.height = this.height; //this.window.innerHeight;
-            canvas.width = this.window.innerWidth;
-            this.height = 116; //this.window.innerHeight;
+            this.height = parseInt(document.querySelector('header').clientHeight); //this.window.innerHeight;
             this.width = this.window.innerWidth;
+            canvas.height = this.height; //this.window.innerHeight;
+            canvas.width = this.width;
             this.vh = this.height / 100;
             this.vw = this.width / 100;
-            //   console.log(w, this.width, h, this.height);
             if (w !== this.width || h !== this.height) {
-
-                const halfh = this.height / 2;
-                const halfw = this.width / 2;
-                for (let i = 0; i < Math.floor(this.spots.length) / 2; i++) {
-                    this.spots[i].x = halfw + (Math.random() * halfw) * Math.cos(i);
-                    this.spots[i].y = halfh + (Math.random() * halfh) * Math.sin(i);
+                const initY = this.height / 2;
+                const initX = this.width / 2;
+                for (let i = 0; i < this.spots.length; i++) {
+                    this.spots[i].x = initX + (Math.random() * initX * 3) * Math.cos(i);
+                    this.spots[i].y = initY + (Math.random() * initY * 3) * Math.sin(i);
                 }
-                for (let i = Math.floor(this.spots.length / 2); i < this.spots.length; i++) {
-                    this.spots[i].x = halfw + (halfw / 4 + Math.random() * halfw / 1.5) * Math.cos(-i);
-                    this.spots[i].y = halfh + (halfh / 3 + Math.random() * halfh / 2) * Math.sin(-i);
-                }
+                // const halfh = this.height / 2;
+                // const halfw = this.width / 2;
+                // for (let i = 0; i < Math.floor(this.spots.length) / 2; i++) {
+                //     this.spots[i].x = halfw + (Math.random() * halfw) * Math.cos(i);
+                //     this.spots[i].y = halfh + (Math.random() * halfh) * Math.sin(i);
+                // }
+                // for (let i = Math.floor(this.spots.length / 2); i < this.spots.length; i++) {
+                //     this.spots[i].x = halfw + (halfw / 4 + Math.random() * halfw / 1.5) * Math.cos(-i);
+                //     this.spots[i].y = halfh + (halfh / 3 + Math.random() * halfh / 2) * Math.sin(-i);
+                // }
             }
 
             this.render(ctx);
@@ -101,7 +105,7 @@ class FishPond {
     }
     click(x, y) {
         this.instructions = false;
-        let food = new Target(x, y, 3);
+        let food = new Food(x, y, 3);
         if (
             this.opacity < .2 &&
             x > 0 &&
@@ -187,5 +191,3 @@ class FishPond {
         this.ripples.push(new Ripple(x, y, size, this, this.ripples.length));
     }
 }
-
-module.exports = FishPond;

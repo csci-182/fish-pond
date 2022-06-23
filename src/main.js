@@ -1,4 +1,5 @@
-const FishPond = require('./fish_pond.js');
+// const FishPond = require('./fish_pond.js');
+import { FishPond } from './fish_pond.js';
 
 const canvas = document.getElementsByTagName("canvas")[0];
 let pond = new FishPond(window);

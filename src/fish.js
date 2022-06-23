@@ -1,4 +1,4 @@
-class Fish {
+export class Fish {
     constructor({
         mass,
         x,
@@ -6,13 +6,16 @@ class Fish {
         direction,
         pond
     }) {
-        this.colors = [
+        this.palette = [
             [70, 70, 70], //black
             [226, 79, 24], //orange
             [255, 245, 45], //yellow
             [253, 230, 230], //white
         ];
-        this.baseColor = Math.floor(Math.random() * this.colors.length);
+        const idx = Math.floor(Math.random() * this.palette.length);
+        this.fillColor = this.getColor(idx, this.palette);
+        this.strokeColor = this.getStrokeColor(idx, this.palette);
+        
         this.pond = pond;
         this.counter = 0;
 
@@ -72,6 +75,14 @@ class Fish {
         }
         this.tail = new Tail(this, this.head.radius);
         this.fins = new Fins(this, this.head.radius);
+    }
+    getColor(idx, palette) {
+        const color = palette[idx];
+        return `rgba(${color[0]}, ${color[1]}, ${color[2]}, 1)`;
+    }
+    getStrokeColor(idx, palette) {
+        const color = palette[idx];
+        return `rgba(${color[0] * 0.8}, ${color[1] * 0.8}, ${color[2] * 0.8}, 0.3)`;
     }
     updateTargetDir(x, y) {
         if (!this.target)
@@ -196,7 +207,7 @@ class Fish {
     drawFish(ctx) {
         this.fins.render(ctx);
 
-        ctx.fillStyle = `rgb(${this.colors[this.baseColor][0]},${this.colors[this.baseColor][1]},${this.colors[this.baseColor][2]})`;
+        ctx.fillStyle = this.fillColor; 
 
         //draw body
         ctx.beginPath();
@@ -229,7 +240,7 @@ class Fish {
         this.tail.render(ctx);
 
         //draw dorsal
-        ctx.fillStyle = `rgb(${this.colors[this.baseColor][0]*.8},${this.colors[this.baseColor][1]*.8},${this.colors[this.baseColor][2]*.8})`;
+        ctx.fillStyle = this.strokeColor.replace('0.3)', '1)'); 
         ctx.beginPath();
         ctx.moveTo(...this.parts[Math.floor(this.parts.length / 5)].getPoint(0, 0));
         // right side
@@ -530,6 +541,8 @@ class Tail {
             []
         ];
         this.radius = radius;
+        this.fillColor = this.fish.fillColor;
+        this.strokeColor = this.fish.strokeColor;
         this.pieceLength = this.radius * 2;
         this.tip = fish.parts[this.fish.parts.length - 1];
         this.maxAngle = this.tip.maxAngle;
@@ -581,7 +594,7 @@ class Tail {
     }
     render(ctx) {
         this.act();
-        ctx.fillStyle = `rgba(${this.fish.colors[this.fish.baseColor][0]},${this.fish.colors[this.fish.baseColor][1]},${this.fish.colors[this.fish.baseColor][2]},.4)`;
+        ctx.fillStyle = this.fillColor; 
 
         for (let j = 0; j < this.pieces.length - 1; j++) {
             ctx.beginPath();
@@ -594,7 +607,7 @@ class Tail {
             ctx.closePath();
         }
 
-        ctx.strokeStyle = `rgba(${this.fish.colors[this.fish.baseColor][0]*.8},${this.fish.colors[this.fish.baseColor][1]*.8},${this.fish.colors[this.fish.baseColor][2]*.8},.3)`;
+        ctx.strokeStyle = this.strokeColor; 
         ctx.lineWidth = 1;
         for (let j = 0; j < this.pieces.length; j++) {
             ctx.beginPath();
@@ -744,6 +757,8 @@ class Fin {
         this.radius = radius;
         this.part = fish.parts[Math.floor(fish.parts.length * ratio)];
         this.pieceLength = this.radius * 3 + 1;
+        this.fillColor = this.fish.fillColor.replace('1)', '0.4)');
+        this.strokeColor = this.fish.strokeColor;
         this.pieces = [
             [new FinPiece(this, undefined, this.side, 0)],
             [new FinPiece(this, undefined, this.side, 1)],
@@ -776,7 +791,7 @@ class Fin {
                 this.pieces[i][j].act();
     }
     render(ctx) {
-        ctx.fillStyle = `rgba(${this.fish.colors[this.fish.baseColor][0]},${this.fish.colors[this.fish.baseColor][1]},${this.fish.colors[this.fish.baseColor][2]},.4)`;
+        ctx.fillStyle = this.fillColor;
 
         for (let j = 0; j < this.pieces.length - 1; j++) {
             ctx.beginPath();
@@ -789,7 +804,7 @@ class Fin {
             ctx.closePath();
         }
 
-        ctx.strokeStyle = `rgba(${this.fish.colors[this.fish.baseColor][0]*.8},${this.fish.colors[this.fish.baseColor][1]*.8},${this.fish.colors[this.fish.baseColor][2]*.8},.2)`;
+        ctx.strokeStyle = this.strokeColor; 
         ctx.lineWidth = 1;
         for (let j = 0; j < this.pieces.length; j++) {
             ctx.beginPath();
@@ -890,5 +905,3 @@ class FinPiece {
     }
 }
 // -----------------------------------------------------------------------------
-
-module.exports = Fish;
