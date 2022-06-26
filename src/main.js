@@ -1,5 +1,5 @@
 // const FishPond = require('./fish_pond.js');
-import { FishPond } from "./fish_pond.js";
+import { FishPond } from "./fish-pond.js";
 const debugMode = false;
 
 const canvas = document.getElementsByTagName("canvas")[0];
