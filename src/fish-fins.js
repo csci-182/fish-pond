@@ -15,8 +15,9 @@ export class Fins {
     this.maxAngle = this.tip.maxAngle;
   }
   updateRadius(radius) {
-    for (let i = 0; i < this.fins.length; i++)
+    for (let i = 0; i < this.fins.length; i++) {
       this.fins[i].updateRadius(radius);
+    }
   }
   change() {
     const rand = Math.random() * 2;
@@ -29,11 +30,15 @@ export class Fins {
     }
   }
   act() {
-    for (let i = 0; i < this.fins.length; i++) this.fins[i].act();
+    for (let i = 0; i < this.fins.length; i++) {
+      this.fins[i].act();
+    }
   }
   render(ctx) {
     this.act();
 
-    for (let i = 0; i < this.fins.length; i++) this.fins[i].render(ctx);
+    for (let i = 0; i < this.fins.length; i++) {
+      this.fins[i].render(ctx);
+    }
   }
 }

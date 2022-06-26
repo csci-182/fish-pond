@@ -70,12 +70,12 @@ export class FinPiece {
             this.fin.pieceLength * Math.sin(this.radian + Math.PI);
         }
       } else {
-        if (angleDiff < -this.maxAngle)
+        if (angleDiff < -this.maxAngle) {
           [this.x, this.y] = this.prevPart.getPoint(
             this.fin.pieceLength,
             Math.PI - this.maxAngle
           );
-        else {
+        } else {
           this.x =
             this.prevPart.x +
             this.fin.pieceLength * Math.cos(this.radian + Math.PI);
@@ -92,12 +92,17 @@ export class FinPiece {
     const xdiff = this.prevPart.x - this.x;
     const ydiff = this.prevPart.y - this.y;
     if (xdiff === 0) {
-      if (ydiff < 0) this.radian = (Math.PI * 3) / 2;
+      if (ydiff < 0) {
+        this.radian = (Math.PI * 3) / 2;
+      }
       this.radian = Math.PI / 2;
     }
     const radian = Math.atan(ydiff / xdiff);
-    if (xdiff > 0) this.radian = radian;
-    else this.radian = -Math.PI + radian;
+    if (xdiff > 0) {
+      this.radian = radian;
+    } else {
+      this.radian = -Math.PI + radian;
+    }
   }
   getPoint(radius, angle) {
     return [

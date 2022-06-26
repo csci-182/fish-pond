@@ -22,13 +22,15 @@ export class Fin {
       [new FinPiece(this, undefined, this.side, 6, { debug: this.debug })],
     ];
 
-    for (let i = 0; i < 7; i++)
-      for (let j = 0; j < 5 - i / 2; j++)
+    for (let i = 0; i < 7; i++) {
+      for (let j = 0; j < 5 - i / 2; j++) {
         this.pieces[i].push(
           new FinPiece(this, this.pieces[i][j], this.side, i, {
             debug: this.debug,
           })
         );
+      }
+    }
   }
   updateRadius(radius) {
     this.radius = radius;
@@ -46,7 +48,6 @@ export class Fin {
   act() {
     for (let i = 0; i < this.pieces.length; i++) {
       for (let j = 0; j < this.pieces[i].length; j++) {
-        // console.log(this.pieces[i][j]);
         this.pieces[i][j].act();
       }
     }
@@ -58,10 +59,12 @@ export class Fin {
     for (let j = 0; j < this.pieces.length - 1; j++) {
       ctx.beginPath();
       ctx.moveTo(this.pieces[j][0].x, this.pieces[j][0].y);
-      for (let i = 1; i < this.pieces[j].length; i++)
+      for (let i = 1; i < this.pieces[j].length; i++) {
         ctx.lineTo(this.pieces[j][i].x, this.pieces[j][i].y);
-      for (let i = this.pieces[j + 1].length - 1; i > -1; i--)
+      }
+      for (let i = this.pieces[j + 1].length - 1; i > -1; i--) {
         ctx.lineTo(this.pieces[j + 1][i].x, this.pieces[j + 1][i].y);
+      }
       if (this.debug) {
         ctx.stroke();
       } else {
@@ -79,15 +82,11 @@ export class Fin {
     for (let j = 0; j < this.pieces.length; j++) {
       ctx.beginPath();
       ctx.moveTo(this.pieces[j][0].x, this.pieces[j][0].y);
-      for (let i = 1; i < this.pieces[j].length; i++)
+      for (let i = 1; i < this.pieces[j].length; i++) {
         ctx.lineTo(this.pieces[j][i].x, this.pieces[j][i].y);
+      }
       ctx.stroke();
       ctx.closePath();
     }
-
-    // ctx.beginPath();
-    // ctx.arc(this.pieces[3].x,this.pieces[3].y,5,0,2*Math.PI);
-    // ctx.fill();
-    // ctx.closePath();
   }
 }
