@@ -4,15 +4,18 @@ import { Ripple } from "./ripple.js";
 
 export class FishPond {
   constructor(window, opts) {
-    this.debug = opts ? opts.debug : false;
-    console.log(this.debug);
+    opts = opts || {};
+    console.log(opts);
+    this.window = window;
+    this.debug = opts.debug ? opts.debug : false;
+    this.selector = opts.selector ? opts.selector : "header";
+    this.fishCount = opts.fishCount || 10;
+
     this.var = 0.001;
-    this.instructions = true;
     this.opacity = 0.8;
     this.ops = this.opacity / 60;
     this.maxFood = 100;
-    this.window = window;
-    this.height = parseInt(document.querySelector("header").clientHeight);
+    this.height = parseInt(document.querySelector(this.selector).clientHeight);
     this.width = this.window.innerWidth;
     console.log(this.height, this.width);
     this.vh = this.height / 100;
@@ -45,7 +48,6 @@ export class FishPond {
     this.fish = [];
     // let fishCount = 1 + this.height * this.width / 70000;
 
-    this.fishCount = 10;
     // for (let i = 0; i < fishCount; i++) {
     //     this.addFish();
     // }
@@ -63,7 +65,9 @@ export class FishPond {
     const startAnimation = () => {
       const h = this.height;
       const w = this.width;
-      this.height = parseInt(document.querySelector("header").clientHeight); //this.window.innerHeight;
+      this.height = parseInt(
+        document.querySelector(this.selector).clientHeight
+      ); //this.window.innerHeight;
       this.width = this.window.innerWidth;
       canvas.height = this.height; //this.window.innerHeight;
       canvas.width = this.width;
@@ -105,7 +109,6 @@ export class FishPond {
     for (let i = 0; i < this.foods.length; i++) this.foods[i].render(ctx);
   }
   click(x, y) {
-    this.instructions = false;
     let food = new Food(x, y, 3, undefined, { debug: this.debug });
     if (
       this.opacity < 0.2 &&

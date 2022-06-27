@@ -3,7 +3,11 @@ import { FishPond } from "./fish-pond.js";
 const debugMode = false;
 
 const canvas = document.getElementsByTagName("canvas")[0];
-let pond = new FishPond(window, { debug: debugMode });
+let pond = new FishPond(window, {
+  debug: debugMode,
+  selector: "main",
+  fishCount: 15,
+});
 
 function clickCanvas(e) {
   const x = e.clientX - canvas.offsetLeft;

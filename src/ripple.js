@@ -23,7 +23,9 @@ export class Ripple {
     ctx.stroke();
     ctx.closePath();
 
-    if (this.opacity < 0) this.pond.ripples.splice(this.indx, 1);
+    if (this.opacity < 0) {
+      this.pond.ripples.splice(this.indx, 1);
+    }
     this.opacity -= this.ops;
     if (!this.debug) {
       this.lineWidth += 0.1;
